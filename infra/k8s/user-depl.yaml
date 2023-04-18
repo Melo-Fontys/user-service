@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-depl
+  name: app-depl
 spec:
   replicas: 1
   selector:
@@ -10,22 +10,22 @@ spec:
     template:
       metadata:
         labels:
-          app: user
+          app: app
       spec:
         containers:
-          - name: user
-            image: user-service/user
+          - name: app
+            image: app-service/app
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: user-srv
+  name: app-srv
 spec:
   selector:
-    app: user
+    app: app
   ports:
-    - name: user
+    - name: app
       protocol: TCP
       port: 3000
       targetPort: 3000
