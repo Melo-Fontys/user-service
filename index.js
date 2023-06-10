@@ -1,27 +1,24 @@
 const express = require("express")
-const bodyParser = require("body-parser")
-const app = express();
 const cors = require("cors");
-
-app.use(cors())
-app.use(bodyParser.json())
-
-// parse requests of content-type - application/json
+const app = express();
 app.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
+app.use(cors())
 
-// database
-const db = require("./app/models");
-const Role = db.role;
+const db = require("./models");
+db.sequelize.sync()
+    .then(() => {
+        console.log("Synced db.");
+    })
+    .catch((err) => {
+        console.log("Failed to sync db: " + err.message);
+    });
 
-db.sequelize.sync();
+require("./routes/user")(app);
 
-// routes
-require('./app/routes/auth.routes')(app);
-require('./app/routes/user.routes')(app);
-
-app.listen(8084, () => {
-    console.log("Listening on 8084")
-})
+const PORT = process.env.PORT || 8004;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`);
+});
