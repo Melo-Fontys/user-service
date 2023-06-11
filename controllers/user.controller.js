@@ -64,9 +64,11 @@ exports.findOne = (req, res) => {
 exports.findByEmail = (req, res) => {
     const email = req.params.email;
 
-    User.findAll({ where: { email: email } })
+    User.findOne({where: {email}})
         .then(data => {
+            console.log(data)
             res.send(data);
+
         })
         .catch(err => {
             res.status(500).send({
