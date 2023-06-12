@@ -27,6 +27,7 @@ kind: Service
 metadata:
   name: user-clusterip-srv
 spec:
+  type: LoadBalancer
   selector:
     app: user
   ports:
